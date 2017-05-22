@@ -16,7 +16,7 @@ class LocalMessage(object):
         Messages are ordered by timestamp so that
         we can order them in chronological order
         """
-        self.timestamp < other.timestamp
+        return self.timestamp < other.timestamp
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
