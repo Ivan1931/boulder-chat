@@ -1,5 +1,5 @@
 # About
-The aim of this project is to develop an encrypted chat messaging and file sharing system. 
+The aim of this project is to develop an encrypted chat messaging and file sharing system.
 
 Currently under construction.
 
@@ -19,7 +19,7 @@ make test
 ```
 
 # Project Structure
-All tests should go in the `tests` directory. The first part of a `test` file should start with `test_*` where start is the rest of the file. This allows `py.test` to detect where tests are supposed to run. 
+All tests should go in the `tests` directory. The first part of a `test` file should start with `test_*` where start is the rest of the file. This allows `py.test` to detect where tests are supposed to run.
 
 The files of the project have the following functions
 
