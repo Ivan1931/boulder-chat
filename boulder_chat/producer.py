@@ -24,7 +24,7 @@ def send_msg(msg):
     print "[x] msg sent to consumer"
 
 
-#using main because I want to create a quit command
+# using main because I want to create a quit command
 def main():
     print "...Welcome to Boulder_Chat..."
     print "type = producer"

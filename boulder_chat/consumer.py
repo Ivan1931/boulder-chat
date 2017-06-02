@@ -30,7 +30,7 @@ def callback(ch, method, properties, body):
 # basic consume binds messages to the callback function
 channel.basic_consume(callback, queue='chat', no_ack=True)
 
-#using main because I want to create a quit command
+# using main because I want to create a quit command
 def main():
     print "...Welcome to Boulder_Chat..."
     print "type = consumer"
