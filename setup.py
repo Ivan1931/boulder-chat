@@ -13,5 +13,6 @@ setup(
         # linters and type checkers
         'prospector',
         'mypy',
+        'flask',
     ],
 )

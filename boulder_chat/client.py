@@ -3,6 +3,7 @@ The code for the python client will reside over here
 """
 from typing import List
 from arrow import Arrow
+from flask import flask
 
 Time = Arrow
 
@@ -31,8 +32,46 @@ class Friend(object):
 
 
 class ClientState(object):
-    address_book: List[Friend]
     private_key: str
     public_key: str
     server_public_key: str
     server_address: str
+
+
+class KeySet(object):
+    our_private_key: str
+    our_public_key: str
+    symetric_key: str
+    reciever_public_key: str
+
+    def __init__(self, our_public_key: str, 
+                our_private_key: str, 
+                symetric_key: str, 
+                reciever_public_key: str):
+        self.our_public_key = our_public_key
+        self.our_private_key = our_private_key
+        self.symetric_key = symetric_key
+        self.reciever_public_key = reciever_public_key
+
+class CommunicationClient(object):
+    reciever_end_point: str
+    key_set: KeySet
+
+    def __init__(self, reciever_end_point: str, key_set: KeySet) -> None:
+        self.reciever_end_point = reciever_end_point
+        self.key_set = key_set
+
+    def send_file(self, file_path: str) -> None:
+        pass
+
+    def send_message(self, message: str) -> None:
+        pass
+
+
+@app.route('/send_file', methods=['POST'])
+def send_files():
+    pass
+
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    pass
