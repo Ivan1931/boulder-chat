@@ -18,6 +18,27 @@ make deps
 make test
 ```
 
+## Running Type Checker and Linter
+
+```
+make -k check
+```
+
+The `-k` option instructs make to keep going even if the
+linter and type checker fails. Need this to run all checks.
+
+Alternatively, the linter can be run separately using:
+
+```
+make lint
+```
+
+The type checker can be run separately using:
+
+```
+make type_check
+```
+
 # Project Structure
 All tests should go in the `tests` directory. The first part of a `test` file should start with `test_*` where start is the rest of the file. This allows `py.test` to detect where tests are supposed to run. 
 

@@ -10,5 +10,8 @@ setup(
         'pytest',
         'cryptography',
         'arrow',
+        # linters and type checkers
+        'prospector',
+        'mypy',
     ],
 )
