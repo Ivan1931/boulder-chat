@@ -19,12 +19,20 @@ If Alice wants to send a secure message with Bob for the first time, the followi
             - allows Alice to derive S_AB
 """
 
+"""
+@todo:
+    * implement crypto methods
+    * implement tests for auth server
+    * implement tests for AuthenticationClient
+"""
+
 from flask import Flask
 from flask import request as req
 from typing import Dict
 from requests import request
 from json import dumps, loads
-from .crypto import AuthServerPayload, public_key_encrypt, private_key_decrypt
+from .crypto import public_key_encrypt, private_key_decrypt
+from .message import AuthServerResponse, AuthServerRequest
 import arrow
 
 def get_server_secret():
@@ -43,28 +51,32 @@ class AuthenticationClient(object):
     sender_key: str # Alice public key
     sender_secret: str # Alice private key
     as_key: str # Authentication server public key
+
     def __init__(self, reciever_key: str, sender_key: str, sender_secret: str, as_key: str) -> None:
         self.reciever_key = reciever_key
         self.sender_key = sender_key
         self.sender_secret = sender_secret
         self.as_key = as_key
     
-    def get_symetric_key(self) -> AuthServerPayload:
-        logger.log(f"encrypting using: ${self.sender_key}")
-        payload = public_key_encrypt(self.as_key, dumps(dict(sender_key=self.sender_key, reciever_key=self.reciever_key)))
+    def get_symetric_key(self) -> AuthServerResponse:
+        logger.info(f"encrypting using: ${self.sender_key}")
+        payload = public_key_encrypt(self.as_key, AuthServerRequest(self.sender_key, self.reciever_key).toJSON())
         result = request.post(self.end_point, data=payload)
         assert('signature' in result)
-        return AuthServerPayload.decrypt(self.sender_secret, result['signature'])
+        return AuthServerResponse.decrypt(self.sender_secret, result['signature'])
 
     def is_alive(self):
         pass
 
+
 def generate_symetric_key() -> str:
     raise NotImplementedError()
 
+
 def generate_signature(alice_public_key: str, bob_public_key: str, time_stamp: int) -> str:
-    payload = AuthServerPayload(alice_public_key, bob_public_key, time_stamp)
+    payload = AuthServerResponse(alice_public_key, bob_public_key, time_stamp)
     return payload.encrypt()
+
 
 def is_authorized(user_public_key) -> bool:
     """
@@ -72,6 +84,7 @@ def is_authorized(user_public_key) -> bool:
     It's here for completeness
     """
     return True
+
 
 def decrypt_payload(payload: str) -> Dict[str, str]:
     """
@@ -81,8 +94,10 @@ def decrypt_payload(payload: str) -> Dict[str, str]:
     """
     return loads(private_key_decrypt(server_secret, payload))
 
+
 def encrypt(signature: str, time_stamp: int) -> str:
     raise NotImplementedError()
+
 
 def process_payload(payload: str) -> str:
     """
@@ -104,9 +119,12 @@ def process_payload(payload: str) -> str:
     """
     logger.info("Starting payload processing for payload:\n${payload}")
     logger.info(payload)
-    public_keys = decrypt_payload(payload)
-    alice = public_keys['sender_key']
-    bob = public_keys['reciever_key']
+    auth_server_request = AuthServerRequest.decrypt(
+                get_server_secret(),
+                payload
+            )
+    alice = auth_server_request.sender_public
+    bob = auth_server_request.reciever_public
     logger.info(f"alice: ${alice}\nbob: ${bob}")
     time = arrow.now()
     logger.info(f"time_stamp: ${time}")
@@ -117,13 +135,18 @@ def process_payload(payload: str) -> str:
     logger.info(f"response_payload:\n${response_payload}")
     return response_payload
 
+
 @app.route('/get_symetric_key', methods=['POST'])
-def gey_key() -> None:
+def get_symetric_key() -> None:
+    """
+    Generates a symetric key for communication between Alice and Bob
+    """
     if req.json:
         j = req.json
         payload = j['payload']
         response = process_payload(payload)
         return dict(payload=response)
+
 
 if __name__=="__main__":
     global server_secret
