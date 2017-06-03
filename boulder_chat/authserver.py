@@ -35,8 +35,8 @@ from .crypto import public_key_encrypt, private_key_decrypt
 from .message import AuthServerResponse, AuthServerRequest
 import arrow
 
-def get_server_secret():
-    raise NotImplementedError()
+def get_server_secret() -> str:
+    return 'a very secret key'
 
 # Setup logging
 import logging
@@ -64,10 +64,6 @@ class AuthenticationClient(object):
         result = request.post(self.end_point, data=payload)
         assert('signature' in result)
         return AuthServerResponse.decrypt(self.sender_secret, result['signature'])
-
-    def is_alive(self):
-        pass
-
 
 def generate_symetric_key() -> str:
     raise NotImplementedError()
