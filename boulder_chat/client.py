@@ -1,5 +1,11 @@
 """
-The code for the python client will reside over here
+This module is in charge of communication between two clients. It works
+in the following way. We assume that Alice has obtained an auth token from the AuthenticationServer:
+    let P_A, P_B be public keys of Alice and Bob
+        p_a, p_b be public keys of Alice and Bob
+        S_AB be the symetric key between Alice and Bob
+        sig be the authentication token between Alice and Bob
+
 """
 from typing import List
 from arrow import Arrow
