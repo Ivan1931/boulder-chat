@@ -10,8 +10,15 @@ in the following way. We assume that Alice has obtained an auth token from the A
 from typing import List
 from arrow import Arrow
 from flask import Flask
+from flask import request as req
 from hashlib import sha256
-from .message import FirstMessageRequest, FirstMessageResponse, MessageRequest, MessageResponse, AuthServerResponse
+from .message import FirstMessageRequest, FirstMessageResponse, MessageRequest, MessageResponse, AuthServerResponse, make_hash
+from .crypto import encrypt, decrypt
+
+# Setup logging
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 Time = Arrow
 
@@ -61,14 +68,29 @@ class CommunicationClient(object):
     def send_message(self, message: str) -> None:
         pass
 
-
 app = Flask(__name__)
 
 @app.route('/send_file', methods=['POST'])
 def send_files():
-    pass
+    return 'hello'
+
+@app.route('/send_first_message', methods=['POST'])
+def send_first_message():
+    if req.json:
+        secret = get_our_secret()
+        encrypted_checksum = req['checksum']
+        checksum = None # decrypt here with our secret
+        encypted_signature = req['signature'] # Decrypt auth server response
+        auth_sig = AuthServerResponse.decrypt(secret, encypted_signature)
+        encypted_message = req['message']
+        message = decrypt(auth_sig.signature, encypted_message)
+        message_checksum = make_hash(message)
+        if checksum != message_checksum:
+            logger.error(f"Invalid checksums: {checksum} != {message_checksum}")
+            return 402
+        else:
+            print(message)
 
 @app.route('/send_message', methods=['POST'])
-
 def send_message():
     pass
