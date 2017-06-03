@@ -48,7 +48,7 @@ class AuthenticationClient(object):
         self.sender_key = sender_key
         self.sender_secret = sender_secret
         self.as_key = as_key
-    
+
     def get_symetric_key(self) -> AuthServerPayload:
         logger.log(f"encrypting using: ${self.sender_key}")
         payload = public_key_encrypt(self.as_key, dumps(dict(sender_key=self.sender_key, reciever_key=self.reciever_key)))
@@ -75,7 +75,7 @@ def is_authorized(user_public_key) -> bool:
 
 def decrypt_payload(payload: str) -> Dict[str, str]:
     """
-    Takes string payload and returns 
+    Takes string payload and returns
     the public keys of both the sender and
     recievers
     """
@@ -90,7 +90,7 @@ def process_payload(payload: str) -> str:
     Payload is an encrypted json blob with the following inputs:
         [P_A, P_B]
     Method will generate S_AB and a signature to verify the
-    that uniquely verifies that the AS is allowed to verfify that
+    that uniquely verifies that the AS is allowed to verify that
     Alice and Bob can communicate
 
     Returns: An encrypted json string containing
