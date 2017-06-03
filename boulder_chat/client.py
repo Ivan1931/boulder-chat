@@ -9,7 +9,7 @@ in the following way. We assume that Alice has obtained an auth token from the A
 """
 from typing import List
 from arrow import Arrow
-from flask import flask
+from flask import Flask
 
 Time = Arrow
 
@@ -59,6 +59,7 @@ class KeySet(object):
         self.symetric_key = symetric_key
         self.reciever_public_key = reciever_public_key
 
+
 class CommunicationClient(object):
     reciever_end_point: str
     key_set: KeySet
@@ -74,10 +75,13 @@ class CommunicationClient(object):
         pass
 
 
+app = Flask(__name__)
+
 @app.route('/send_file', methods=['POST'])
 def send_files():
     pass
 
 @app.route('/send_message', methods=['POST'])
+
 def send_message():
     pass
