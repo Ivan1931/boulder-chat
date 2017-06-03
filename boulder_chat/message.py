@@ -28,7 +28,7 @@ class AuthServerResponse(object):
         self.reciever_public = reciever_public
         self.time_stamp = time_stamp
 
-    def toJSON(self):
+    def toJSON(self) -> str:
         return dumps(dict(sender_public=self.sender_public, 
                           reciever_public=self.reciever_public, 
                           time_stamp=self.time_stamp))
@@ -55,7 +55,7 @@ class AuthServerRequest(object):
         self.reciever_public = reciever_public
 
 
-    def toJSON(self):
+    def toJSON(self) -> str:
         return dumps(dict(
                     sender_public=self.sender_public, 
                     reciever_public=self.reciever_public
@@ -73,7 +73,7 @@ class FirstMessageRequest(object):
     authentication_signature: AuthServerResponse
     first_message: str
     
-    def __init__(self, authentication_signature, first_message):
+    def __init__(self, authentication_signature, first_message) -> None:
         self.authentication_signature = authentication_signature
         self.first_message = first_message
 
@@ -86,9 +86,29 @@ class FirstMessageResponse(object):
 
 
 class MessageRequest(object):
-    pass
+    symetric_key: str
+    message: str
+
+    def __init__(self, symetric_key: str, message: str) -> None:
+        self.symetric_key = symetric_key
+        self.message = message
+
+    def encrypt(self) -> str:
+        """
+        Encrypts the message using the symetric key
+        """
+        raise NotImplementedError()
+
+    @staticmethod
+    def decrypt(self, symetric_key: str, payload: str) -> MessageRequest:
+        """
+        Decrypts a message request using the symetric key for that user
+        """
+        raise NotImplementedError()
+
 
 class MessageResponse(object):
-    pass
+    ok: bool
 
-
+    def __init__(ok: bool) -> None:
+        self.ok = ok
