@@ -28,9 +28,9 @@ class KeySet(object):
     symetric_key: str
     reciever_public_key: str
 
-    def __init__(self, our_public_key: str, 
-                our_private_key: str, 
-                symetric_key: str, 
+    def __init__(self, our_public_key: str,
+                our_private_key: str,
+                symetric_key: str,
                 reciever_public_key: str):
         self.our_public_key = our_public_key
         self.our_private_key = our_private_key
