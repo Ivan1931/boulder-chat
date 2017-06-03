@@ -17,7 +17,7 @@ Server --> Bob: Recieved(signature)
 // user
 {
   public_key: string,
-  user_name: string, 
+  user_name: string,
   user_status: string,
   messages: [message] // deleted once messages have been acknowledged
 }
