@@ -14,6 +14,6 @@ setup(
         'prospector',
         'mypy',
         'flask',
-        'mockito',
+        'mock',
     ],
 )

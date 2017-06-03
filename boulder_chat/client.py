@@ -12,63 +12,61 @@ from arrow import Arrow
 from flask import Flask
 from flask import request as req
 from hashlib import sha256
-from .message import FirstMessageRequest, FirstMessageResponse, MessageRequest, MessageResponse, AuthServerResponse, make_hash
-from .crypto import encrypt, decrypt
+from .crypto import *
 
 # Setup logging
 import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-Time = Arrow
-
-class ClientState(object):
-    private_key: str
-    public_key: str
-    server_public_key: str
-    server_address: str
-
-
-class KeySet(object):
-    our_private_key: str
-    our_public_key: str
-    symetric_key: str
-    reciever_public_key: str
-
-    def __init__(self, our_public_key: str,
-                our_private_key: str,
-                symetric_key: str,
-                reciever_public_key: str):
-        self.our_public_key = our_public_key
-        self.our_private_key = our_private_key
-        self.symetric_key = symetric_key
-        self.reciever_public_key = reciever_public_key
-
-
-class FirstMessageClient(object):
-    auth_resp: AuthServerResponse
-
-    def __init__(self, auth_resp: AuthServerResponse):
-        self.auth_resp = auth_resp
-
-    def send_message(self, message: str):
-        return dumps(payload)
-
-class CommunicationClient(object):
-    reciever_end_point: str
-    key_set: KeySet
-
-    def __init__(self, reciever_end_point: str, key_set: KeySet) -> None:
-        self.reciever_end_point = reciever_end_point
-        self.key_set = key_set
-
-    def send_file(self, file_path: str) -> None:
-        pass
-
-    def send_message(self, message: str) -> None:
-        pass
-
 app = Flask(__name__)
+
+def create_message_payload(key_pair, symetric_key, message):
+    message_hash = create_key(message)
+    encrypted_message = encrypt_AES(key_pair, message)
+    signature = sign_text(key_pair, message_hash)
+    return dict(signature=signature, 
+                public_key=export_public_key(key_pair), 
+                message=encrypted_message)
+
+def create_first_message_payload(sender_key_pair, reciever_key_pair, symetric_key, message):
+    encrypted_symetric_key = encrypt_RSA(reciever_key_pair.publickey(), symetric_key)
+    message_hash = create_key(message)
+    signature = sign_text(sender_key_pair, message_hash)
+    encrypted_message = encrypt_AES(symetric_key, message)
+    return dict( 
+        signature=signature,
+        symetric_key=encrypted_symetric_key.decode(),
+        message=encrypted_message,
+        public_key=export_public_key(sender_key_pair).decode(),
+    )
+
+def process_first_message_payload(secret_key, payload, hook=lambda x: x):
+    signature = payload['signature']
+    public_key = import_public_key(payload['public_key']) # need this to verify signature
+    encrypted_symetric_key = payload['symetric_key']
+    encrypted_message = payload['message']
+    symetric_key = decrypt_RSA(secret_key, encrypted_symetric_key)
+    message = decrypt_AES(symetric_key, encrypted_message)
+    assert(verify_sign(public_key, signature, create_key(message)))
+    result = dict(
+        sender=public_key, 
+        message=message, 
+        symetric_key=symetric_key
+    )
+    hook(result)
+    return result
+
+def process_message_payload(symetric_key, payload, hook=lambda x: x):
+    encrypted_message = payload['message']
+    signature = payload['signature']
+    public_key = payload['public_key']
+    # Crash violently if we cannot verify someones sign for now
+    message = decrypt_AES(symetric_key, encrypted_message)
+    assert(verify_sign(import_public_key(public_key), signature, message))
+    result = dict(sender=public_key, message=message)
+    hook(result)
+    return result
 
 @app.route('/send_file', methods=['POST'])
 def send_files():
@@ -77,20 +75,9 @@ def send_files():
 @app.route('/send_first_message', methods=['POST'])
 def send_first_message():
     if req.json:
-        secret = get_our_secret()
-        encrypted_checksum = req['checksum']
-        checksum = None # decrypt here with our secret
-        encypted_signature = req['signature'] # Decrypt auth server response
-        auth_sig = AuthServerResponse.decrypt(secret, encypted_signature)
-        encypted_message = req['message']
-        message = decrypt(auth_sig.signature, encypted_message)
-        message_checksum = make_hash(message)
-        if checksum != message_checksum:
-            logger.error(f"Invalid checksums: {checksum} != {message_checksum}")
-            return 402
-        else:
-            print(message)
+        return process_first_message_payload(req.json)
 
 @app.route('/send_message', methods=['POST'])
 def send_message():
-    pass
+    if req.json:
+        return process_message_payload(req.json)
