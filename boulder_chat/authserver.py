@@ -88,7 +88,7 @@ def decrypt_payload(payload: str) -> Dict[str, str]:
     the public keys of both the sender and
     recievers
     """
-    return loads(private_key_decrypt(server_secret, payload))
+    return loads(private_key_decrypt(get_server_secret(), payload))
 
 
 def encrypt(signature: str, time_stamp: int) -> str:
@@ -145,7 +145,5 @@ def get_symetric_key() -> None:
 
 
 if __name__=="__main__":
-    global server_secret
-    server_secret = get_server_secret()
     app.run(host='localhost', port=4000, debug=True)
 

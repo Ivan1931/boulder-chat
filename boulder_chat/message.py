@@ -12,6 +12,8 @@ and the server. There are currently 3 interactions that take place in the whole 
 
 from arrow import Arrow
 from json import dumps
+import hashlib
+import .crypto as outcrypto
 
 class AuthServerResponse(object):
     """
@@ -37,7 +39,7 @@ class AuthServerResponse(object):
         raise NotImplementedError()
 
     @staticmethod
-    def decrypt(secret: str, payload: str) -> AuthServerResponse:
+    def decrypt(secret: str, payload: str):
         """
         This method takes the sender (Alice) secret key
         and a payload she has recieved from the server
@@ -53,7 +55,7 @@ class AuthServerRequest(object):
     def __init__(self, sender_public: str, reciever_public: str) -> None:
         self.sender_public = sender_public
         self.reciever_public = reciever_public
-
+        # Encrypt the private key here
 
     def toJSON(self) -> str:
         return dumps(dict(
@@ -65,17 +67,35 @@ class AuthServerRequest(object):
         raise NotImplementedError()
 
     @staticmethod
-    def decrypt(secret: str, payload: str) -> AuthServerRequest:
+    def decrypt(secret: str, payload: str):
         raise NotImplementedError()
                         
 
+def make_hash(message: str) -> bytes:
+    m = hashlib.sha256()
+    m.update(message)
+    return m.digest()
+
 class FirstMessageRequest(object):
-    authentication_signature: AuthServerResponse
     first_message: str
+    auth_sig: AuthServerResponse
+    checksum: bytes
     
-    def __init__(self, authentication_signature, first_message) -> None:
-        self.authentication_signature = authentication_signature
+    def __init__(self, auth_sig: AuthServerResponse, first_message: str) -> None:
+        self.auth_sig = auth_sig
         self.first_message = first_message
+        self.checksum = make_hash(first_message)
+
+    def encrypt(self) -> str:
+        pass
+        
+    def is_valid(self) -> str:
+        pass
+
+    @staticmethod
+    def decrypt(reciever_secret: str):
+        pass
+
 
 
 class FirstMessageResponse(object):
@@ -100,7 +120,7 @@ class MessageRequest(object):
         raise NotImplementedError()
 
     @staticmethod
-    def decrypt(self, symetric_key: str, payload: str) -> MessageRequest:
+    def decrypt(self, symetric_key: str, payload: str):
         """
         Decrypts a message request using the symetric key for that user
         """

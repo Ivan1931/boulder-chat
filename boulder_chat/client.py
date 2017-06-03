@@ -10,32 +10,10 @@ in the following way. We assume that Alice has obtained an auth token from the A
 from typing import List
 from arrow import Arrow
 from flask import Flask
+from hashlib import sha256
+from .message import FirstMessageRequest, FirstMessageResponse, MessageRequest, MessageResponse, AuthServerResponse
 
 Time = Arrow
-
-class LocalMessage(object):
-    message: str
-    timestamp: Time
-    sent: bool # True if we sent this message
-
-    def __lt__(self, other):
-        """
-        Messages are ordered by timestamp so that
-        we can order them in chronological order
-        """
-        return self.timestamp < other.timestamp
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__dict__ == other.__dict__
-        else:
-            return False
-
-class Friend(object):
-    symetric_key: str
-    public_key: str
-    messages: List[LocalMessages] = []
-
 
 class ClientState(object):
     private_key: str
@@ -59,6 +37,15 @@ class KeySet(object):
         self.symetric_key = symetric_key
         self.reciever_public_key = reciever_public_key
 
+
+class FirstMessageClient(object):
+    auth_resp: AuthServerResponse
+
+    def __init__(self, auth_resp: AuthServerResponse):
+        self.auth_resp = auth_resp
+
+    def send_message(self, message: str):
+        return dumps(payload)
 
 class CommunicationClient(object):
     reciever_end_point: str
