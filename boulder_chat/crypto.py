@@ -4,6 +4,7 @@ from json import dumps
 import ast
 import hashlib
 import base64
+import os
 from Crypto import Random
 from Crypto.Cipher import AES
 from Crypto.PublicKey import RSA
@@ -20,6 +21,9 @@ def create_key(text):
     if type(text) is str:
         text = text.encode()
     return hashlib.sha256(text).digest()
+
+def generate_key(size=32):
+    return os.urandom(size)
 
 # padding methods for blocks
 pad = lambda s: s + (block_size - len(s) % block_size) * chr(block_size - len(s) % block_size).encode()
