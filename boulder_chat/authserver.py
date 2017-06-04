@@ -28,14 +28,9 @@ If Alice wants to send a secure message with Bob for the first time, the followi
 
 from flask import Flask
 from flask import request as req
-from typing import Dict
-from requests import request
-from json import dumps, loads
 from . import crypto as c
-import arrow
 
 def make_auth_payload(server_public_key, sender_public_key, reciever_public_key):
-    pk = server_public_key.publickey()
     if type(reciever_public_key) is not str and type(reciever_public_key) is not bytes:
         reciever_public_key = c.export_public_key(reciever_public_key)
     return dict(
@@ -44,9 +39,7 @@ def make_auth_payload(server_public_key, sender_public_key, reciever_public_key)
     )
 
 def process_auth_payload(server_key_pair, payload, hook=lambda x: x):
-    encryped_reciever = payload['reciever']
     sender_public_key = c.import_public_key(payload['sender'])
-    reciever = payload['reciever']
     symetric_key = c.generate_key()
     symetric_signature = c.sign_text(server_key_pair, symetric_key)
     response = dict(

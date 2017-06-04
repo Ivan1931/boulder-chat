@@ -92,6 +92,17 @@ class ClientStore(object):
         else:
             return None
 
+    def add_user(self, host, public_key, symetric_key, first_message):
+        if type(public_key) is bytes or type(public_key) is str:
+            public_key = c.import_public_key(public_key)
+        self.users.append(dict(
+            public_key=public_key,
+            conversation=[],
+            symetric_key=symetric_key,
+            host=host
+        ))
+        self.add_message(public_key, first_message)
+
     def all_user_data(self):
         """
         Gets all data stored on users
