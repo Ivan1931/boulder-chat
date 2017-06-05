@@ -9,23 +9,13 @@
       "conversation": [
         {
           "is_file": false,
-          "message": "Hello, how are you doing?",
-          "sender": true
-        },
-        {
-          "is_file": false,
-          "message": "What are you up too?",
-          "sender": true
-        },
-        {
-          "is_file": false,
-          "message": "Hellloooooo?",
+          "message": "Hello? Are you there?",
           "sender": true
         }
       ],
       "host": "localhost:4000",
       "public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtIyyLSiAVhN2QTBbgkMf\nXqv7fhAJRMWX6aQHAkH3QcPvHmgxCzv2d+aNgthKuRCQLNaBD4j2UPYVdGNSsEKl\nKW51d9mMi4zVDVH+3WRoyVnAFysAQROabkPAaIQGPwj5ezf8CKovc3vn7Vb6KHvU\n8QU6HTjVy1AvIK5NKi7ADQNOXmHwxhIj2xduO5Y/hoHzupCn4+0pqycMTztdcGM1\nrjMZGPGl7yqbpBCb+Oiutwz0LoV3XoQ3+/ZfuYJ21by4rhuzzOvJ6pcYcqes9nN7\nJ7l1tIokYoE3ehVtX9yAe2OUglK8LQN5bmAgtOtPYaNm1n4I/jL41/9jDQR4Im97\nOQIDAQAB\n-----END PUBLIC KEY-----",
-      "symetric_key": "kQm1TzhwE8/c13ODMKh3ikdUKqjmMKc34CFTbrCFDJY="
+      "symetric_key": "x8kH8odbmBxpoysnlH+cijFz6/LZXuBJTGPPQLpVd8k="
     }
   }
 }

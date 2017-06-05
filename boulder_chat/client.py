@@ -15,14 +15,6 @@ from . import authserver as a
 from . import store as s
 import json
 
-# Setup logging
-"""
-import logging
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
-"""
-
-
 def create_message_payload(key_pair, symetric_key, message, is_file=False):
     message_hash = c.create_key(message)
     encrypted_message = c.encrypt_AES(symetric_key, message)
@@ -52,6 +44,7 @@ def process_message_payload(symetric_key, payload, hook=lambda x: x):
         is_file=True
     # Crash violently if we cannot verify someones sign for now
     message = c.decrypt_AES(symetric_key, encrypted_message)
+    print(f"Unencrypted message:\n{message}")
     if not c.verify_sign(c.import_public_key(public_key), signature, c.create_key(message)):
         return dict(error="unverfied")
     result = dict(sender=public_key, 
@@ -191,6 +184,8 @@ def send_first_message():
 def send_message():
     if req.get_json():
         payload = req.get_json()['payload']
+        print("Message recieved:")
+        print(json.dumps(payload, indent=2))
         sender_public_key = payload['public_key']
         symetric_key = store.get_user_symetric_key(payload['public_key']) 
         # print(store.all_user_data())
@@ -209,6 +204,11 @@ def send_message():
             return first_message, 400
         else:
             return "{'recieved': 'ok'}", 200
+
+# Supress flask logging
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 def run_flask():
     print("Starting flask")

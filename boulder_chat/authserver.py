@@ -107,8 +107,12 @@ def get_symetric_key() -> None:
     if req.get_json():
         j = req.get_json()
         load = j['payload']
+        print("Received auth request")
+        print(json.dumps(load, indent=2, sort_keys=True))
         response = process_auth_payload(auth_store.private_key(), load)
-        return json.dumps(dict(payload=response)), 200
+        print("Responding with")
+        response = json.dumps(dict(payload=response))
+        return response, 200
     return json.dumps({'payload': 'error'}), 500
 
 
