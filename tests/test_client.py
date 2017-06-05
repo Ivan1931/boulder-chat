@@ -8,11 +8,8 @@ def test_process_message_payload():
     key = c.create_key('this is a password')
     key_pair = c.gen_key_RSA()
     public_key = c.export_public_key(key_pair)
-    encrypted_message = c.encrypt_AES(key, message)
-    signature = c.sign_text(key_pair, message)
-    payload_json = json.dumps(dict(message=c.encrypt_AES(key, message), 
-                                   signature=signature, 
-                                   public_key=public_key.decode()))
+    payload = client.create_message_payload(key_pair, key, message)
+    payload_json = json.dumps(payload)
     result = client.process_message_payload(key, json.loads(payload_json))
     assert(result['message'] == message)
 

@@ -19,17 +19,27 @@ If Alice wants to send a secure message with Bob for the first time, the followi
             - allows Alice to derive S_AB
 """
 
-"""
-@todo:
-    * implement crypto methods
-    * implement tests for auth server
-    * implement tests for AuthenticationClient
-"""
-
 from flask import Flask
 from flask import request as req
+import requests
+import json
 from . import crypto as c
+from . import store as s
 
+auth_store_path = 'auth_test_1.json'
+
+def get_test_auth_store():
+    auth_store = s.AuthStore(file_path=auth_store_path)
+    return auth_store
+
+def get_test_stores():
+    auth_store = s.AuthStore(file_path=auth_store_path)
+    user_store = s.create_test_store(auth_store.public_key())
+    return dict(
+        auth_store=auth_store,
+        user_store=user_store,
+    )
+    
 def make_auth_payload(server_public_key, sender_public_key, reciever_public_key):
     if type(reciever_public_key) is not str and type(reciever_public_key) is not bytes:
         reciever_public_key = c.export_public_key(reciever_public_key)
@@ -58,19 +68,48 @@ def decode_auth_response(server_public, sender_secret, payload):
         signature=unencrypted_signature
     )
 
+def get_auth_store():
+    return s.AuthStore(auth_store_path)
+
+def request_symetric_key(store, reciever_public_key):
+    host = store.server_host()
+    payload = make_auth_payload(
+                store.server_public_key(),
+                store.public_key(),
+                reciever_public_key)
+    headers={'Content-Type': 'application/json'}
+    auth_payload = requests.post(
+        f"http://{host}/get_symetric_key", 
+        data=json.dumps(dict(payload=payload)),
+        headers=headers,
+    )
+    if auth_payload.status_code == 200:
+        auth_payload_json = auth_payload.json()
+        return decode_auth_response(
+                    store.server_public_key(),
+                    store.private_key(),
+                    auth_payload_json['payload'],
+                )
+    else:
+        print("We did not succeed in connecting to the server")
+        print(auth_payload.json())
+        return None
 
 app = Flask(__name__)
 
-@app.route('/get_symetric_key', methods=['POST'])
+auth_store = get_test_auth_store()
+
+@app.route('/get_symetric_key', methods=['POST', 'PUT'])
 def get_symetric_key() -> None:
     """
     Generates a symetric key for communication between Alice and Bob
     """
-    if req.json:
-        j = req.json
-        payload = j['payload']
-        response = process_auth_payload(payload)
-        return dict(payload=response)
+    if req.get_json():
+        j = req.get_json()
+        load = j['payload']
+        response = process_auth_payload(auth_store.private_key(), load)
+        return json.dumps(dict(payload=response)), 200
+    return json.dumps({'payload': 'error'}), 500
 
 
 if __name__=="__main__":
