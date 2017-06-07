@@ -1,5 +1,6 @@
 import sys
-from . import store
+import os
+from . import store as s
 from . import client
 from . import authserver as a
 from . import crypto as c
@@ -29,7 +30,7 @@ Usage:
     first - send a message to a new contact
 """
 def main():
-    store = client.get_sender()
+    store = s.ClientStore(os.environ['FILE_PATH'])
     chatting = True
     print("Welcome to boulder chat")
     while chatting:
@@ -42,7 +43,17 @@ def main():
                 options.append(user)
             reciever_public_key = select_option(options)
             if reciever_public_key:
-                client.deliver_message(store, reciever_public_key, read_line())
+                response = client.deliver_message(store, reciever_public_key, read_line())
+                if response:
+                    if 'error' in response:
+                        print("Error!")
+                        print(response)
+                    else:
+                        print("Success!")
+                        print(response)
+                else:
+                    print("Some unknown error occured :(")
+                    
         elif line == "conv":
             options = []
             for option, user in enumerate(store.all_user_data()):
@@ -77,11 +88,19 @@ def main():
             host = read_line()
             print("Please enter the message you would like to send")
             message = read_line()
-            client.deliver_first_message(store, host, reciever_public_key, message)
+            response = client.deliver_first_message(store, host, reciever_public_key, message)
+            if response:
+                if 'error' in response:
+                    print("Error!")
+                    print(response)
+                else:
+                    print("Success!")
+                    print(response)
+            else:
+                print("Some unknown error occured :(")
         else:
+            print("You entered an incorrect option :(")
             print(help_message)
-
-
             
 if __name__=="__main__":
     main()

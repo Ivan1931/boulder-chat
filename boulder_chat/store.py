@@ -155,6 +155,11 @@ class ClientStore(object):
         if symetric_key:
             return symetric_key['symetric_key']
 
+    def save_public_key(self, file_path):
+        pk = self.public_key()
+        with open(file_path, 'wb') as f:
+            f.write(c.export_public_key(pk))
+
 def create_test_store(server_materials=None):
     test_material = c.gen_key_RSA()
     user_material = c.gen_key_RSA()

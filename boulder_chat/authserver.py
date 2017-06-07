@@ -51,10 +51,13 @@ def make_auth_payload(server_public_key, sender_public_key, reciever_public_key)
 def process_auth_payload(server_key_pair, payload, hook=lambda x: x):
     sender_public_key = c.import_public_key(payload['sender'])
     symetric_key = c.generate_key()
-    symetric_signature = c.sign_text(server_key_pair, symetric_key)
+    print(f"Generated key:{symetric_key}")
+    symetric_hash = c.create_key(symetric_key)
+    symetric_sig = c.sign_text(server_key_pair, symetric_hash)
+    print(f"Signature key:{symetric_sig}")
     response = dict(
         symetric_key=c.encrypt_RSA(sender_public_key, symetric_key).decode(),
-        symetric_signature=symetric_signature
+        symetric_signature=symetric_sig,
     )
     hook(response)
     return response
@@ -62,7 +65,7 @@ def process_auth_payload(server_key_pair, payload, hook=lambda x: x):
 def decode_auth_response(server_public, sender_secret, payload):
     unencrypted_sym_key = c.decrypt_RSA(sender_secret, payload['symetric_key'])
     unencrypted_signature = payload['symetric_signature']
-    assert(c.verify_sign(server_public, unencrypted_signature, unencrypted_sym_key))
+    assert(c.verify_sign(server_public, unencrypted_signature, c.create_key(unencrypted_sym_key)))
     return dict(
         symetric_key=unencrypted_sym_key,
         signature=unencrypted_signature
@@ -110,8 +113,8 @@ def get_symetric_key() -> None:
         print("Received auth request")
         print(json.dumps(load, indent=2, sort_keys=True))
         response = process_auth_payload(auth_store.private_key(), load)
-        print("Responding with")
         response = json.dumps(dict(payload=response))
+        print(f"Responding with:\n{response}")
         return response, 200
     return json.dumps({'payload': 'error'}), 500
 

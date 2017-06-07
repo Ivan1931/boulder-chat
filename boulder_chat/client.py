@@ -89,6 +89,7 @@ def deliver_message(store, user_public_key, message, is_file=False):
     if message_respone.status_code == 200:
         store.add_message(user_public_key, message, sender=True)
         store.save()
+        return message_respone
 
 def deliver_first_message(store, user_host, user_public_key, message):
     auth_payload = a.request_symetric_key(store, user_public_key)
@@ -148,24 +149,26 @@ def create_test_users(save=False):
     stores = a.get_test_stores()
     sender = stores['user_store']
     auth = stores['auth_store']
-    reciever = s.create_test_store(auth.public_key())
+    receiver = s.create_test_store(auth.public_key())
     sender.store_path = 'sender.json'
-    reciever.users = {}
-    reciever.store_path = 'reciever.json'
+    sender_pk_path = 'sender.pem'
+    receiver.users = {}
+    receiver.store_path = 'receiver.json'
+    receiver_pk_path = 'receiver.pem'
     sender.users = {}
     if save:
         sender.save()
-        reciever.save()
+        sender.save_public_key(sender_pk_path)
+        receiver.save()
+        receiver.save_public_key(receiver_pk_path)
 
 def get_receiver():
-    return s.ClientStore('reciever.json')
+    return s.ClientStore('receiver.json')
 
 def get_sender():
     return s.ClientStore('sender.json')
 
 app = Flask(__name__)
-
-store = get_receiver()
 
 @app.route('/send_first_message', methods=['POST'])
 def send_first_message():
@@ -210,6 +213,16 @@ import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
+import os
+
+try:
+    store = get_receiver()
+except FileNotFoundError:
+    print("Not found Bah")
+
 def run_flask():
+    sender_port = os.environ['PORT']
+    file_path = os.environ['FILE_PATH']
+    store = s.ClientStore(file_path)
     print("Starting flask")
-    app.run('127.0.0.1', port=4000)
+    app.run('127.0.0.1', port=int(sender_port))

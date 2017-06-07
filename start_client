@@ -1,3 +1,0 @@
-#!/bin/bash
-
-FLASK_DEBUG=1 FLASK_APP=./boulder_chat/client.py python -m flask run --port 4000

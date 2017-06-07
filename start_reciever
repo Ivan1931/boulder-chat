@@ -1,0 +1,3 @@
+#!/bin/bash
+
+PORT=4000 FILE_PATH='receiver.json' python -c 'import boulder_chat.client as m; m.run_flask()'
