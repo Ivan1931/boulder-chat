@@ -99,8 +99,9 @@ class ClientStore(object):
             file_name = "".join([random.choice("1234567abcdefghijklmnop") for _ in range(8)])
             print(f"Writing the following data to file:{file_name}\n")
             print(message)
-            with open(file_name, 'w') as f:
-                f.writelines(message)
+            message = base64.b64decode(message)
+            with open(file_name, 'wb') as f:
+                f.write(message)
             file_message = dict(is_file=True, file_path=file_name, sender=sender)
         else:
             file_message = dict(is_file=True, file_path=file_path, sender=sender)

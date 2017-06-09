@@ -1,5 +1,6 @@
 import sys
 import os
+import base64
 from . import store as s
 from . import client
 from . import authserver as a
@@ -68,6 +69,7 @@ def main():
                 contents = f.read()
                 if reciever_public_key:
                     print("=== Sending file ===")
+                    contents = base64.b64encode(contents)
                     response = client.deliver_message(store, reciever_public_key, contents, is_file=True, file_path=file_path)
                     if response:
                         if 'error' in response:
