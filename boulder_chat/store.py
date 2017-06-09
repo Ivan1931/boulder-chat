@@ -160,6 +160,11 @@ class ClientStore(object):
         with open(file_path, 'wb') as f:
             f.write(c.export_public_key(pk))
 
+    def reload(self):
+        with open(self.store_path, 'r') as f:
+            data = json.load(f)
+            self.from_data(data, self.store_path)
+
 def create_test_store(server_materials=None):
     test_material = c.gen_key_RSA()
     user_material = c.gen_key_RSA()

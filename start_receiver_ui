@@ -1,0 +1,3 @@
+#!/bin/bash
+
+FILE_PATH=receiver.json python -c 'import boulder_chat.message as m; m.main()'

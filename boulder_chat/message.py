@@ -30,12 +30,12 @@ Usage:
     first - send a message to a new contact
 """
 def main():
-    store = s.ClientStore(os.environ['FILE_PATH'])
     chatting = True
     print("Welcome to boulder chat")
     while chatting:
         print(help_message)
         line = read_line()
+        store = s.ClientStore(os.environ['FILE_PATH'])
         if line == "chat":
             options = []
             for option, user in enumerate(store.all_user_data()):
@@ -86,9 +86,11 @@ def main():
                 continue
             print("Now enter the domain name of the other user")
             host = read_line()
+            print("Now enter the address you would like to return the message too")
+            our_return_address = read_line()
             print("Please enter the message you would like to send")
             message = read_line()
-            response = client.deliver_first_message(store, host, reciever_public_key, message)
+            response = client.deliver_first_message(store, host, reciever_public_key, our_return_address, message)
             if response:
                 if 'error' in response:
                     print("Error!")

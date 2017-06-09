@@ -9,23 +9,38 @@
       "conversation": [
         {
           "is_file": false,
-          "message": "Hello?",
-          "sender": false
-        },
-        {
-          "is_file": false,
-          "message": "Hello? Are you there?",
+          "message": "Hello, how are you doing?",
           "sender": false
         },
         {
           "is_file": false,
           "message": "Hello?",
+          "sender": true
+        },
+        {
+          "is_file": false,
+          "message": "Hi again, correcting pervious error",
+          "sender": false
+        },
+        {
+          "is_file": false,
+          "message": "hey?",
+          "sender": true
+        },
+        {
+          "is_file": false,
+          "message": "Hi",
+          "sender": true
+        },
+        {
+          "is_file": false,
+          "message": "hello again :)",
           "sender": false
         }
       ],
       "host": "localhost:3000",
       "public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlyUQjdTm9pWtIo840TC2\n6pEq3JiJf8GvG++EUawNUMGxJv8DnjY79FmGqc7AOnWmsHVB2Q2VKHirnNaVskR4\nHKkMM6OBYK9dlRTGkqK/IU/Pz3TyNu926XE4I23Xd2Mo8FC8TTpHsmV7sRhkuETs\n+w8cCx5tfIvySt2oSe2G2fNkrvTXRd+kPeFvtbWy8wf9D6EH05Xv8NPV2XpeBUnJ\neZ3vHUXIDf3NcmO4mBtSQSUbu9jIERbE76YTq17VlP+2dnngBg+BRo9KgjKaLN7t\nMUVdjgueBbdSrdo0phWB2+mQzIwdSUfY7f8snjzPdZEUL86chAoJrIV1F1jRecUB\ndwIDAQAB\n-----END PUBLIC KEY-----",
-      "symetric_key": "6JWLLJjZfiv+VQ8ck3mMUtOlVygo8b8pJpEeh0Dm70s="
+      "symetric_key": "5p9U77JKWuy2Eq+sG+QSeI4H9KKxWOD5znsjJILNbLg="
     }
   }
 }

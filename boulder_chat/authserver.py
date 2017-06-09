@@ -39,47 +39,65 @@ def get_test_stores():
         auth_store=auth_store,
         user_store=user_store,
     )
+
+def make_auth_token(server_key_pair, sender_public, receiver_public):
+    return c.sign_text(server_key_pair,
+                c.export_public_key(sender_public) + c.export_public_key(receiver_public))
+
+def check_auth_token(server_public, auth_token, sender_public, receiver_secret):
+    s = c.export_public_key(sender_public) + c.export_public_key(receiver_secret)
+    return c.verify_sign(server_public, auth_token, s)
     
-def make_auth_payload(server_public_key, sender_public_key, reciever_public_key):
-    if type(reciever_public_key) is not str and type(reciever_public_key) is not bytes:
-        reciever_public_key = c.export_public_key(reciever_public_key)
+def make_auth_payload(server_public_key, sender_public_key, receiver_public_key):
+    if type(receiver_public_key) is not str and type(receiver_public_key) is not bytes:
+        receiver_public_key = c.export_public_key(receiver_public_key)
     return dict(
-        reciever=reciever_public_key.decode(),
+        receiver=receiver_public_key.decode(),
         sender=c.export_public_key(sender_public_key).decode()
     )
 
 def process_auth_payload(server_key_pair, payload, hook=lambda x: x):
     sender_public_key = c.import_public_key(payload['sender'])
+    receiver_public_key = c.import_public_key(payload['receiver'])
+    sender_receiver = payload['sender'] + payload['receiver']
+    # auth_token is a combination of sender and receiver
+    auth_token = c.sign_text(server_key_pair, sender_receiver)
     symetric_key = c.generate_key()
     print(f"Generated key:{symetric_key}")
-    symetric_hash = c.create_key(symetric_key)
-    symetric_sig = c.sign_text(server_key_pair, symetric_hash)
+    symetric_sig = c.sign_text(server_key_pair, symetric_key)
     print(f"Signature key:{symetric_sig}")
     response = dict(
         symetric_key=c.encrypt_RSA(sender_public_key, symetric_key).decode(),
         symetric_signature=symetric_sig,
+        auth_token=auth_token
     )
     hook(response)
     return response
 
-def decode_auth_response(server_public, sender_secret, payload):
+def decode_auth_response(server_public, receiver_public, sender_secret, payload):
     unencrypted_sym_key = c.decrypt_RSA(sender_secret, payload['symetric_key'])
-    unencrypted_signature = payload['symetric_signature']
-    assert(c.verify_sign(server_public, unencrypted_signature, c.create_key(unencrypted_sym_key)))
+    signature = payload['symetric_signature']
+    auth_token = payload['auth_token']
+    if not c.verify_sign(server_public, signature, unencrypted_sym_key):
+        return dict(error="Could not verify the integrity of the symetric key")
+    concatenated_key = c.export_public_key(sender_secret) + c.export_public_key(receiver_public)
+    if not c.verify_sign(server_public, auth_token, concatenated_key):
+        return dict(error="Could not verify the integrity of the authentication token")
     return dict(
         symetric_key=unencrypted_sym_key,
-        signature=unencrypted_signature
+        signature=signature,
+        auth_token=auth_token,
     )
 
 def get_auth_store():
     return s.AuthStore(auth_store_path)
 
-def request_symetric_key(store, reciever_public_key):
+def request_symetric_key(store, receiver_public_key):
     host = store.server_host()
     payload = make_auth_payload(
                 store.server_public_key(),
                 store.public_key(),
-                reciever_public_key)
+                receiver_public_key)
     headers={'Content-Type': 'application/json'}
     auth_payload = requests.post(
         f"http://{host}/get_symetric_key", 
@@ -90,13 +108,12 @@ def request_symetric_key(store, reciever_public_key):
         auth_payload_json = auth_payload.json()
         return decode_auth_response(
                     store.server_public_key(),
+                    receiver_public_key,
                     store.private_key(),
                     auth_payload_json['payload'],
                 )
     else:
-        print("We did not succeed in connecting to the server")
-        print(auth_payload.json())
-        return None
+        return dict(error="An error occured on the server", error_message=auth_payload.json())
 
 app = Flask(__name__)
 

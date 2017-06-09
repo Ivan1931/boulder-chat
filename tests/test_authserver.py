@@ -14,7 +14,7 @@ def test_process_auth_payload():
         auth_payload = a.process_auth_payload(a_key, json.loads(payload_json))
         # simulate convertion too and from json
         auth_payload_json = json.dumps(auth_payload)
-        auth_load = a.decode_auth_response(a_key, s_key, json.loads(auth_payload_json))
+        auth_load = a.decode_auth_response(a_key.publickey(), r_key.publickey(), s_key, json.loads(auth_payload_json))
         assert(test_key == auth_load['symetric_key'])
-        assert(c.verify_sign(a_key, auth_load['signature'], auth_load['symetric_key']))
+        assert(c.verify_sign(a_key.publickey(), auth_load['signature'], auth_load['symetric_key']))
 
