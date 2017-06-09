@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python -c 'import boulder_chat.client as c; c.create_test_users(True)'

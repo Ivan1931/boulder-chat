@@ -27,6 +27,7 @@ help_message = """
 Usage:
     conv - view a conversation
     chat - send a message to existing contact
+    file - send a file to existing content
     first - send a message to a new contact
 """
 def main():
@@ -43,7 +44,9 @@ def main():
                 options.append(user)
             reciever_public_key = select_option(options)
             if reciever_public_key:
-                response = client.deliver_message(store, reciever_public_key, read_line())
+                message = read_line()
+                print("=== Sending message ===")
+                response = client.deliver_message(store, reciever_public_key, message)
                 if response:
                     if 'error' in response:
                         print("Error!")
@@ -53,7 +56,28 @@ def main():
                         print(response)
                 else:
                     print("Some unknown error occured :(")
-                    
+        elif line == "file":
+            options = []
+            for option, user in enumerate(store.all_user_data()):
+                print(f"[{option}] Public Key:\n{user}")
+                options.append(user)
+            reciever_public_key = select_option(options)
+            print("Please enter path to file")
+            file_path = read_line()
+            with open(file_path, 'rb') as f:
+                contents = f.read()
+                if reciever_public_key:
+                    print("=== Sending file ===")
+                    response = client.deliver_message(store, reciever_public_key, contents, is_file=True, file_path=file_path)
+                    if response:
+                        if 'error' in response:
+                            print("Error!")
+                            print(response)
+                        else:
+                            print("Success!")
+                            print(response)
+                    else:
+                        print("Some unknown error occured :(")
         elif line == "conv":
             options = []
             for option, user in enumerate(store.all_user_data()):
@@ -69,7 +93,7 @@ def main():
                     else:
                         display += '[THEM] '
                     if message['is_file']:
-                        display += message['file_path']
+                        display += f"[FILE] {message['file_path']}"
                     else:
                         display += message['message']
                     print(display)

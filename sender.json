@@ -1,46 +1,8 @@
 {
-  "material": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAlyUQjdTm9pWtIo840TC26pEq3JiJf8GvG++EUawNUMGxJv8D\nnjY79FmGqc7AOnWmsHVB2Q2VKHirnNaVskR4HKkMM6OBYK9dlRTGkqK/IU/Pz3Ty\nNu926XE4I23Xd2Mo8FC8TTpHsmV7sRhkuETs+w8cCx5tfIvySt2oSe2G2fNkrvTX\nRd+kPeFvtbWy8wf9D6EH05Xv8NPV2XpeBUnJeZ3vHUXIDf3NcmO4mBtSQSUbu9jI\nERbE76YTq17VlP+2dnngBg+BRo9KgjKaLN7tMUVdjgueBbdSrdo0phWB2+mQzIwd\nSUfY7f8snjzPdZEUL86chAoJrIV1F1jRecUBdwIDAQABAoIBAFMZ5OUmdqqDFwNW\nXbXeo+OKV1ecYpUkp6OjaEwDXfrV1BINyi51wTcS9hBtBZHe1/xTLBYr+qOa3ThJ\nX1r5fFS9uWC2+E5xfPGXz6oV4yJsoGR+9yGvPeESB/yqyvnwQjUHHtETRxJV69Eu\nCUqrUuSipReT7jy5MUlqX7nt5+Pyr0yGyKbjU8UkT++8WMq01RC3QjBZKQych9wJ\nb12wcki7Mqdr99UWFOrSo4CmfUNMla2n/2YTiZQAhhXfkPv9IDCpneXcwXSVQxWO\nAOQub0QMs6UUhMwsC0r+xg6hfKXD26MAzfyIXCRO29Fvewxc75yjbPe/hD79DS7g\ni6sf8ekCgYEAw2Xzm4EtlXiYtZ89k64qrVeJLzUA4YeSRElHClMWvJdRE72L8/YO\npNicJrsri1f4EVg3AxNLI+TnVjYoN/cMdxsbKhYFNsNT9TnWdKXoimEDDyAxLgz3\nfYdDvPSe3GUV7aNQQvdlDHw/lGrUMfnBrnOr0rXpWkCeA9JFUP5s9+sCgYEAxgWE\nhKDaXVDU/+IMqx9lw5HlgsGOQu/kKT4P6FvjESNsthIEuv/qB2/mr4P8s2ynm/mT\npvslV17c4I1ALCGcoH/lZUwMFhXbxYPqy/GqAiUYYmFgXfa2IayQ2PH4J3K3dvqC\nxV+EZvF7Y7W/W9+vy9wDktB50c+voKTQBL5M5aUCgYEArhVi2CRajFSJGSbqIWyG\nMTFP03MRedzi/1uZoyUrmJHndgLlcVDC8zLYy9jtjpOtOyawvFiwFSaWxEQzyMid\nnm/T38cGlien4U7KNdqqNr7/jrZLmo+K35dnTi1Sa2DUDIf3tfHbYShBLOWQb4Xo\nfJgpeO0BHZt8LENl5icGxkkCgYBAP+oPXmF7hY6Wt7GElFtgaSYels6hyVQuTYS7\nz5SNKwFK0e3W/tHgN96RdDG5xbdcVE4kD7i98HmaIjqAFyfKq7SyeUoyoET+gR7d\nrTuMFp0izpWF51aQ9nzI5zmtEvuUDxP/Fk7PV+rBH2dHV/yiGHDQYfQkr048wTz9\nTQGGQQKBgHpU+CBfODMh/IC/SStqBTZcqeESo0z/NgE0+vONPPyFq1MVvCLAGVxO\nxzU1v2BnWWGB52oWiOqo3REtn8aCoimhOzSykxaP/RLa/maBUIDvBMdsbwO2ckdE\nQXYMXl2hF5ud3A6lOY+duOcoOVY2hj+XVfxZ9d27w4eN5Se+OOKH\n-----END RSA PRIVATE KEY-----",
+  "material": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEAmCbqpy+17VIlPgXtcyOuJnMt3XAowPcJOYuUCpKO01PTVvnH\nYC9+iBLpMgfWGHXZh4OWv4Z2zdka1r0MAxjL8nPsOO+xE+/emZ7a5CxKpIxXldK0\ncb0TdKUdwzRbfoAyD0W+GAqVAcd6gix5vYVQvinO7IHEiyIFVaISlE1SImKZTRyK\n7ziHsstj19YfbLiRJ7LNraD3aolfQGyuDXGnSLHLQvpl+f9xKtU8jqFKxVDsfZP7\nthd2ain0UFzgqZD3lVVfml2K8u3XZwhhO+iVPo/3Pf5vD2EpxglbPsAPxDMXKAF+\nAhf9NI9SaFHdgvF3ZvRBUAusZX+28FiBTmIUzQIDAQABAoIBADCfvz3OsYU2S1CW\n9Ftne7At/upVfbCtQfVx9c2rKJnAoDmbeWvzwawa3wtuFa2be/kixHpQrob6aulV\nYRFcS1EgWs2XTC/i6HCPo8RnozMS5qqqu5/dnOoaGnjXsqWqslTPJQDp4NTAuxX+\nwKkggb1D/yz2C6mrJalIMkfSrfzupzbR6hANIlYH1P0WyYqrEgkUJ0KpawBBpsix\n+Sr30/zCsGVWrqW3LFSFIevUODSdRERomILwHXRvwDuNEaZKbAZf6M5f4q3OrgjQ\n4+hh+TKe5d5CN3zaX59t9saT/6bhXgnAMXx5ZSwN2l7rPeV4sEtREZOjhQROo0+A\neUNK7gECgYEAt6uedgXepVa+qShWcJEkwZvcb/cmOFdZX1WihihsMWmjPWNDHqJg\nzo5/WQSSvmb77anS/MabjJP8TILJFgXaVvLKFq7ADi2g8YLD15gRZ94otrTMVGl+\n5+daiE0M506ZVJowAl7MEi0pDyTachyTioyfPVhKkbQPPbkr9mXvSnUCgYEA1BHV\nS3OH0FQaSM3dFYOD0Hkuwlj9ODWmCZGy3D8qoZ9qT5W0S+JnEY0QL/68jjdYzFmP\nwARN8ysW6ZJaVBVjF1XuQLo5u/e9mL7tWpcOgQYlofbPqZ7SEXHHx+/O2ktYYThg\nToCMPX4SrRscUr/baP2Ek6dQJ7NZscH7WP3o5fkCgYEAjXvSUTAsVkkADeZYz9W+\n7rVVlZpZAsWmvt2EmLvCvD2X1c4FAjArSnJSfwwazjkej/Fl6fpEEIJes8F7jU9s\n5dWY/ugWYdWcSO5mVkl5/v0Pd87GJ7AsZg+9mYlhCz1st9MecHT91nKbUmMdMxH4\nRZ4VfHfq2VpO80kVKHVVY5ECgYEAwwNrKykgWVkdmpmElsYLrufhMeL3aHsdJmuP\nGK4Vm+6mqmy2EZouwZsAqcIMzpLi23f4ktDihZy4Qy3MVsocB1eD8o3Njaax+QaJ\n6eZC9i8a6Ce4qvhboKMK3jcN9vuWWECpf0cCr4GB1yG5F/dJ4vBOvCD9uqRY9Pe3\nFQzY4LECgYBICTICY43GtteWmB5/LAl4IBZ26UdWoyjSATZ1YTdhQKBDnQWuunfP\ntNeWWBdlmCuaGy+6RAy53bJEw3IvVuLKtPP+TDKHZJ36kd5+tsXqM63YPv3prbpq\nBV0vkwK0F+pRiBsCyshKBKeDlZdFGYLjILoWvwFrzn+7aO7/FTBVaw==\n-----END RSA PRIVATE KEY-----",
   "server": {
     "host": "localhost:5000",
     "public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArPg22k343akC9DHWS/Gm\nG3Phpcu2NKPeWdSKMSob3Clm3S7zA9AM5+VVkYOa3C7PLr2pIx5/S4Qdcix9vLz6\nl2XQI5YuV30P/P9+ruUlueD7Ix1ejvsMQH5SpesL2Jf4kw+wkuxX9/72SpobX7iY\nxZU2cUHFTlZknLN1HdkIzSUifwXgtUDe1UHqT/JJPjYo+1EDJxY4+eYeLv2DRbjN\n6UipjEgzuQPtYzZ2Fh7UUPuAKunrkudXjaPJBtgP50dBbpXjH68oLsHurYkeuJGd\nJr0O0dtfZUp8uTdV3b2VoM+F++U+v7lhb0MlBVi9Uh0BVoxMD2A3xfZG5x7Jhcu1\nZwIDAQAB\n-----END PUBLIC KEY-----"
   },
-  "users": {
-    "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApBD8GbKy2Y8JWZVyoxdY\nEw4edK4JYK2QqJ2HMOH1MuYBWMlt883wTL8XCRj6afGrVVIJs8IlsCCDJhhwhVDM\nz9+MCsJvroO1U2WSRAbRNUEyJ3M6x98YWmf7MIzsX1dWsUyfpAlrgt/Nvg9aD+au\nZ9s/B6e/nXjb7ZqSalA2zxTQ6OTmDRv1KEMX/Cdv8yjj8xWsINx8JGMSF/usB/ZA\nDCCYC4JtcMFESlkX2cocHeF0ykDMh75PHCKcb8rxXkbDog0NJk+Gnq5tlVglRCJF\nCJveEIAmM/ESfVKKnv6kWiV0FKUDQTPUCOpgD0vGxlvb5NOa3UvDXilbqJATb7C7\ndwIDAQAB\n-----END PUBLIC KEY-----": {
-      "conversation": [
-        {
-          "is_file": false,
-          "message": "Hello, how are you doing?",
-          "sender": true
-        },
-        {
-          "is_file": false,
-          "message": "Hello?",
-          "sender": false
-        },
-        {
-          "is_file": false,
-          "message": "Hi again, correcting pervious error",
-          "sender": true
-        },
-        {
-          "is_file": false,
-          "message": "hey?",
-          "sender": false
-        },
-        {
-          "is_file": false,
-          "message": "Hi",
-          "sender": false
-        },
-        {
-          "is_file": false,
-          "message": "hello again :)",
-          "sender": true
-        }
-      ],
-      "host": "localhost:4000",
-      "public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApBD8GbKy2Y8JWZVyoxdY\nEw4edK4JYK2QqJ2HMOH1MuYBWMlt883wTL8XCRj6afGrVVIJs8IlsCCDJhhwhVDM\nz9+MCsJvroO1U2WSRAbRNUEyJ3M6x98YWmf7MIzsX1dWsUyfpAlrgt/Nvg9aD+au\nZ9s/B6e/nXjb7ZqSalA2zxTQ6OTmDRv1KEMX/Cdv8yjj8xWsINx8JGMSF/usB/ZA\nDCCYC4JtcMFESlkX2cocHeF0ykDMh75PHCKcb8rxXkbDog0NJk+Gnq5tlVglRCJF\nCJveEIAmM/ESfVKKnv6kWiV0FKUDQTPUCOpgD0vGxlvb5NOa3UvDXilbqJATb7C7\ndwIDAQAB\n-----END PUBLIC KEY-----",
-      "symetric_key": "5p9U77JKWuy2Eq+sG+QSeI4H9KKxWOD5znsjJILNbLg="
-    }
-  }
+  "users": {}
 }

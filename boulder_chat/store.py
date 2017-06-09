@@ -94,11 +94,17 @@ class ClientStore(object):
         user = self.get_user_data(user_public_key)
         user['conversation'].append(dict(message=message, sender=sender, is_file=False))
 
-    def add_file(self, user_public_key, message, sender=False):
-        file_name = [random.choice("1234567abcdefghijklmnop") for _ in range(8)]
-        with open(file_name, 'w') as f:
-            f.writelines(message)
-        file_message = dict(is_file=True, file_path=file_name, sender=sender)
+    def add_file(self, user_public_key, message, sender=False, file_path=None):
+        if file_path == None:
+            file_name = "".join([random.choice("1234567abcdefghijklmnop") for _ in range(8)])
+            print(f"Writing the following data to file:{file_name}\n")
+            print(message)
+            with open(file_name, 'w') as f:
+                f.writelines(message)
+            file_message = dict(is_file=True, file_path=file_name, sender=sender)
+        else:
+            file_message = dict(is_file=True, file_path=file_path, sender=sender)
+        user = self.get_user_data(user_public_key)
         user['conversation'].append(file_message)
 
     def get_user_host(self, user_public_key):

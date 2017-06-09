@@ -20,6 +20,7 @@ def create_message_payload(key_pair, symetric_key, message, is_file=False):
     encrypted_message = c.encrypt_AES(symetric_key, message)
     signature = c.sign_text(key_pair, message_hash)
     return dict(signature=signature, 
+                is_file=is_file,
                 public_key=c.export_public_key(key_pair).decode(), 
                 message=encrypted_message)
 
@@ -48,7 +49,11 @@ def process_message_payload(symetric_key, payload, hook=lambda x: x):
     if 'is_file' in payload and payload['is_file']:
         is_file=True
     # Crash violently if we cannot verify someones sign for now
-    message = c.decrypt_AES(symetric_key, encrypted_message)
+    try:
+        message = c.decrypt_AES(symetric_key, encrypted_message)
+    except ValueError:
+        print("It appears that someone has tampered with the symetric key")
+        return dict(error="Someone has tampered with the symetric key")
     print(f"Unencrypted message:\n{message}")
     if not c.verify_sign(c.import_public_key(public_key), signature, c.create_key(message)):
         return dict(error="it appears that the message sent to you has been tampered with")
@@ -82,7 +87,7 @@ def process_first_message_payload(secret_key, server_public, payload, hook=lambd
     hook(result)
     return result
 
-def deliver_message(store, user_public_key, message, is_file=False):
+def deliver_message(store, user_public_key, message, is_file=False, file_path=None):
     sender_private_key = store.private_key()
     symetric_key = store.get_user_symetric_key(user_public_key)
     print(f"Sending message")
@@ -99,8 +104,12 @@ def deliver_message(store, user_public_key, message, is_file=False):
             headers=headers,
         )
     if message_respone.status_code == 200:
-        store.add_message(user_public_key, message, sender=True)
-        store.save()
+        if is_file:
+            store.add_file(user_public_key, message, sender=True, file_path=file_path)
+            store.save()
+        else:
+            store.add_message(user_public_key, message, sender=True)
+            store.save()
         return message_respone
 
 def deliver_first_message(store, user_host, user_public_key, sender_host, message):
@@ -143,14 +152,6 @@ def deliver_first_message(store, user_host, user_public_key, sender_host, messag
         print("Error requesting symetric key:")
         print(auth_payload)
 
-def send_file(store, user, file_path):
-    text = ''
-    with open(file_path, 'r') as f:
-        for line in f:
-            text += line
-    deliver_message(store, user, text, True)
-
-
 def recieve_first_message(store, message):
     sender = message['sender']
     print(f"Adding user:\n{sender}")
@@ -163,7 +164,10 @@ def recieve_first_message(store, message):
     store.save()
 
 def recieve_message(store, message):
-    store.add_message(message['sender'], message['message'])
+    if message['is_file']:
+        store.add_file(message['sender'], message['message'], sender=False)
+    else:
+        store.add_message(message['sender'], message['message'])
     store.save()
 
 
@@ -245,8 +249,9 @@ log.setLevel(logging.ERROR)
 import os
 
 try:
-    file_path = os.environ['FILE_PATH']
-    store = s.ClientStore(file_path)
+    if 'FILE_PATH' in os.environ:
+        file_path = os.environ['FILE_PATH']
+        store = s.ClientStore(file_path)
 except FileNotFoundError:
     print("Not found Bah")
 

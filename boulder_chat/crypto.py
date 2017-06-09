@@ -29,7 +29,8 @@ unpad = lambda s: s[:-ord(s[len(s)-1:])]
 
 # generic encryption method for AES
 def encrypt_AES(key, payload):
-    payload = payload.encode();
+    if type(payload) is str:
+        payload = payload.encode();
     raw_payload = pad(payload)
     # generate the cipher for encryption and encrypt
     cipher = AES.new(key, mode, IV=IV)
