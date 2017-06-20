@@ -9,7 +9,7 @@ block_size = 16
 IV = block_size * '\x00'
 mode = AES.MODE_CBC
 
-message = 'bitches'
+message = 'hello world'
 password = 'abcdefghijklmnopqrstuvwxyz'
 test_key = hashlib.sha256(password.encode()).digest()
 
@@ -63,7 +63,7 @@ def encrypt_RSA(public_key, payload):
     encrypted_payload = public_key.encrypt(payload, 32)
     # Extract output from the encoding tuple
     # base64 encode it so we can transfer that data over the wire
-    return base64.b64encode(encrypted_payload[0]) 
+    return base64.b64encode(encrypted_payload[0])
 
 def decrypt_RSA(private_key, payload):
     if type(payload) is str:
@@ -100,7 +100,7 @@ def sign_text(key_pair, text):
 
 def verify_sign(key_pair, signature, text):
     # Because our python libraries for crypto are old we
-    # need to wrap the signature in a 
+    # need to wrap the signature in a
     # tuple
     if type(signature) is int:
         signature = (signature, [])
