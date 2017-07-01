@@ -1,7 +1,18 @@
-# About
-The aim of this project is to develop an encrypted chat messaging and file sharing system. 
+# Disclaimer
+This is not meant to be taken seriously - it's a university project. This was undertaken for the Network and Information Security module at UCT CS honours.
 
-Currently under construction.
+# About
+In this project we were instructed to create an encrypted file and message sending protocol that performs the following functions
+
+* prevents interception - confidentiality
+* prevents tampering
+* prevents impersonation
+
+The design of the program is based on GNU PGP with a twist - an authentication server (that actually does not authenticate but could be enabled to do so).
+We assumed the following things about the auth server - all clients had it's public key so that it could be trusted. 
+
+We had to write a brief document about this application as a requirement for the project. It is on this repository under the file `nis-part-ii.pdf`
+
 
 # Building Instructions
 To install dependencies and run tests the following instructions should be followed
@@ -39,11 +50,14 @@ The type checker can be run separately using:
 make type_check
 ```
 
-# Project Structure
-All tests should go in the `tests` directory. The first part of a `test` file should start with `test_*` where start is the rest of the file. This allows `py.test` to detect where tests are supposed to run. 
+# Demo
+Running the demo - open 5 terminal windows. In each window do the following:
 
-The files of the project have the following functions
+1. `start_auth` - this starts the authentication server
+2. `start_sender` - this starts the senders server
+3. `start_receiver` - this starts the receivers server
+4. `start_sender_ui` - this starts a simple command line interface too the sender
+5. `start_receiver_ui` - this starts the receiver ui
 
-* `crypto.py` - all cryptographic utilities should go in this file
-* `server.py` - all code related to running the central chat server should go in this file
-* `client.py` - all code related to running the central client server should go in this file
+# Future Work
+Actually building a more sensible messaging system
